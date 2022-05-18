@@ -1,0 +1,235 @@
+基础题：
+1,为什么重写了equals还要重写hashCode
+    hashCode主要用于提升查询效率，来确定在散列结构中对象的存储地址；
+    hash类型的存储结构，添加元素重复性校验的标准就是先取hashCode值，后判断equals()；
+    equals()相等的两个对象，hashcode()一定相等；
+2.  聊一下java的集合类以及实现原理
+    Set(hashSet,TreeSet,LinkedHashSet) 
+     HashSet 是基于HashMap实现的，HashSet的值存储在HashMap key 上，HashSet实现基本上都是调用HashMap
+     相应接口实现的  
+    List(ArrayList,LinkedArrrayList)  数组
+    Map(HashMap,ConcurrentHashMap）以及HashTable 他们实现原理和对比（数组+链表）
+3.HashMap ConcurrentHashMap Arraylist实现原理
+   HashMap 1.7之前：数组+链表  1.7之后：数组+链表+红黑树
+   注意点：后续补
+4. java 中队列有哪些，分别有什么区别
+   ArrayBlockinngQueue  有界队列
+   LinkedBlockingQueue  无界对列
+   PriorityBolckingQueue
+   SynchronousQueue
+5.Comparable和comparator 区别
+   Comparable接口实际是java.lang包下的，他有一个compareTo(Object o）方法用来排序
+   comparator是java.util包下的，他有一个compare(Object o1,Object o2)来进行排序
+5.
+
+
+rocketMq
+   1、应用场景以及自己项目中应用到的场景，实现功能 rocketMq 优缺点
+        应用场景 :异步:当一些请求结果不需要立即返回给客户端的时候，例如下单包含：支付，减库存，生成物流信息等,
+	       对于前端用户
+ 	       削峰:
+	       解耦：
+	       实现分布式事务：通过发送半消息，（类似与两阶段提交）当本地执行成功后，再发送另一半消息，具体
+	是该提交还是回滚参照本地执行成功与失败的情况，同时如果发送确认过程中失败了，MQ也有会查的机制，
+	需要发送者这里再提供一个供MQ 回调的方法去验证本地是否执行成功
+   2、集群消息和广播消息（1 Topic, 3queue, 1个消费组，2个消费者）
+     参考链接：    
+    https://www.jianshu.com/p/73ffa6d423fc
+    https://blog.csdn.net/en_joker/article/details/103510737
+    集群消息  每个组Group 组都要有一个消费成功，同时同一个Group 组只可能有一台消费，不能有多台消费，这种消
+    费往往应用在有状态的服务，比如缓存服务器去消费消息更新自己的缓存数据，那么每一台缓存服务器都需要拿到消息
+    广播消息      需要集群中每一台机器都要消费完成 ，即使是同一个Group组的，也要全部都消费
+    假如A系统发了一个广播消息
+    BCD 系统都订阅这个广播消息
+    BCD为三个不同的系统
+    假如B系统（group=B）部署三台，C系统部署三台（group=C），D系统部署三台（group=D）
+    A这个广播消息会被B系统消费三次,C系统消费三次，D系统消费三次
+    但是如果A系统发的是一个集群消息
+    假如B系统（group=B）部署三台，C系统部署三台（group=C），D系统部署三台（group=D）
+    A这个集群消息会被B系统消费一次,C系统消费一次，D系统消费一次	
+
+   3、rocketMq 默认开几个线程取消费
+      https://www.cnblogs.com/thinkqin/p/11794028.html    ？？？//TODO
+
+   4、如何保证消息不丢失
+   5、 延迟消息实现原理，如何发送固定时间消息例如8秒情况
+   6、如何处理重复消费问题
+   7几种集群模式
+   主从如何进行数据同步
+   ack实现机制
+   死信队列
+   顺序消息，如何保证消息的顺序性，全局有序和局部有序
+   如何保证消息的一致性
+  技术选型：rocketMq kafaka rabbitMq 技术选型如何做
+  消息突然挤压如何处理
+2.redis
+  为什么快，IO内存模型 TPS/QPS 是多少，解决了项目中什么问题
+  淘汰策略有哪些， LRU 算法实现原理
+  热KEY 如何设计，比如 库存 100 0000W  做促销，不能都访问数据库，放到redis 单台也不行 ，如何做。。。
+  缓存击穿、雪崩，穿透
+  redis锁
+  RDB和AOF 区别
+  集群模式，主从模式，哨兵模式 主从复制原理
+  几种数据类型的实现原理
+  项目中用过的数据类型，举例一一介绍
+  redis 如何解决主从数据延迟的
+  现在redis服务器内存不够用了，但公司也不会给我们购买新的服务器，想办法解决内存不足的情况，而且不能删除redis中的数据，也不能转储备份，
+  解决这种情况还要考虑redis 性能，甚至性能还要比之前高，如何考虑这种情况
+  redis 是否使用了主从复制，读写分离
+ 如何用redis 实现限流， incr(),用List 结构能否实现
+  3.Mysql
+   B树和B+树区别 为什么选用B+树 （B树支持范围查找，叶子节点有个双向指针）
+   SQL执行流程有个
+   存储引擎有哪些 myisam和Innodb 区别
+   mysql 锁   这个不太多
+   事务四个特性，隔离级别介绍，每个特性的实现原理
+      原子性：undolog
+      一致性：double write
+      隔离性：未提交读,读最新的事务版本就可以了，
+                   多版本并发控制，是提高并发的一种手段，最早的数据库只有再读读情况下才能并发，读写，写写，写读都需要阻塞，引入
+	   多版本并发控制后，只有写写才需要阻塞。
+                   快照读：快照读的前提是当前并发级别不是串行化，串行化情况下快照读会退化为当前读
+  		当前读:  select 共享锁，forupdate  排他锁，这样就是保证每次读取的都是最新的版本，且读取是还要保证其他事物不能
+		修改当前记录，会对读取记录加锁
+	  readview  事务在进行快照读时产生的读视图（记录并维护这当前活跃的事务Id list,当前生成快照时刻最小的事务ID,最大的事务ID+1）
+                  trx_list（名字我随便取的）
+	一个数值列表，用来维护Read View生成时刻系统正活跃的事务ID
+	up_limit_id
+	记录trx_list列表中事务ID最小的ID
+	low_limit_id
+	ReadView生成时刻系统尚未分配的下一个事务ID，也就是目前已出现过的事务ID的最大值+1
+	首先比较DB_TRX_ID < up_limit_id, 如果小于，则当前事务能看到DB_TRX_ID 所在的记录，如果大于等于进入下一个判断
+	接下来判断 DB_TRX_ID 大于等于 low_limit_id , 如果大于等于则代表DB_TRX_ID 所在的记录在Read View生成后才出现的，那对当前事务肯定不可见，如果小于则进入下一个判断
+	判断DB_TRX_ID 是否在活跃事务之中，trx_list.contains(DB_TRX_ID)，如果在，则代表我Read View生成时刻，你这个事务还在活跃，还没有Commit，你修改的数据，我当前事务也是看不见的；如果不在，则说明，你这个事务在Read View生成之前就已经Commit了，你修改的结果，我当前事务是能看见的
+                               
+
+ 	   提交读： 通过MVCC多版本并发控制实现，MVCC多版本并发控制是在Innodb存储引擎为前提下实现的，
+		版本链，当前读，快照读，
+		版本链： 记录中还有三个隐士字段，回滚指针，rowId,当前事务版本，  
+	   可重复读：
+                   串行化：通过加表锁实现
+	   
+      持久性：
+   表空间、段、区、页？
+   索引 组合索引原理，组合索引最左前缀，执行计划里几个参数介绍
+   分库分表  分库分表策略，线上你们如何分的，以及你们的主从模式，几主几从，分库分表后带来的问题  
+  三层B+树大概存储2000W数据,mysql每页大小16K,操作系统每页大小4K ,  为什么
+  mysql 调优方向
+ 4.多线程高并发
+ActomicInteger 底层实现机制  CAS（https://blog.csdn.net/stephen8341/article/details/45193331）
+   线程同步的方法 
+   wait/notify, Syncronizer,Lock,CountDownLatch,CyclicBarrier,Symphere,线程池的Callback回调,ThreadLocal与同步机制
+   线程池工作原理，几个参数介绍，实际工作中的应用场景 线程池中线程大小设置
+   ConcurentHashMap
+   ArrayList  HashMap Set LinkedList
+   AQS、Syncronized 对象头 安全点
+   公平锁和非公平锁只有两处不同：
+	非公平锁在调用 lock 后，首先就会调用 CAS 进行一次抢锁，如果这个时候恰巧锁没有被占用，那么直接就获取到锁返回了。
+	非公平锁在 CAS 失败后，和公平锁一样都会进入到 tryAcquire 方法，在 tryAcquire 方法中，如果发现锁这个时候被释放了（state == 0），非公平锁会直接 CAS 抢锁，但是公平锁会判断等待队列是否有线程处于等待状态，如果有则不去抢锁，乖乖排到后面。
+    在AQS中，通过int类型的全局变量state来表示同步状态，即用state来表示锁。ReentrantReadWriteLock也是通过AQS来实现锁的，但    是ReentrantReadWriteLock有两把锁：读锁和写锁，它们保护的都是同一个资源，那么如何用一个共享变量来区分锁是写锁还是读锁呢？答案就是按位拆分。
+  wait(),notifiy seleep 区别
+   ThreadLocal
+   volitie 关键字
+  Callable 是如何实现带返回值的
+   fork/join 有了解过吗
+5.Hystrix/RateLimiter
+  Hystrix 工作原理 
+  Hystrix 的超时时间 与rebin 超时时间 都设置了以哪个为准  ，如果rebin 设置了重试呢，如何设置Hystrix 超时时间（ 计算公式是什么）
+  Hystrix 线程池隔离和信号量隔离有什么区别，信号量/线程池使用场景
+  Hystrix 和RateLimiter 区别，为啥用了Hystrix 还要用rateLimiter
+  RateLimit 实现原理 
+  三种限流算法
+ 5.zookeeper
+   分布式锁实现与Redis 锁之间的对比
+   zk分布式锁的惊群效应如何处理
+   zk可以实现的功能
+   zab协议、Proxy算法，选主机制
+  zk 如果分机房部署，专线断了，如何工作
+  zk 可以实现那些功能
+
+6..dubbo rpc
+   dubbo 实现原理
+   dubbo负载均衡是如何实现的
+   自己实现RPC框架、
+8、Spring 、Springboot
+    1. spring中用的设计模式，并举例
+          代理模式：AOP实现，事务实现，日志管理
+          工厂模式：BeanFactory工厂生产Bean
+          责任链模式：
+          模板模式：
+          单例模式：这个比如在创建bean的时候
+          观察者：
+          适配器：
+    Spring boot 自动装配机制
+    springboot application.xml 和boot strap.xml区别，加载顺序
+    AOP/IOC 实现原理
+   Spring  事务实现原理
+    事务的传播特性
+    Autowire和Resource注解区别
+   spring boot 配置文件加载顺讯 classpath ,config.....
+   SpringClould常用组件
+    skywalking组件
+
+
+11JVM
+    内存模型，
+    类加载机制
+    垃圾回收算法，
+    CPU百分百，内存溢出
+    gc root 的节点
+    自己项目采用的垃圾收集器
+    jvm调优点
+   低延迟如何选择垃圾收集器
+   三色标记算法
+   
+Finilize终结方法
+   
+12.算法
+   冒泡，快速，堆排序（能手写） 快速排序可能存在问题，如何优化，冒泡排序如何优化（如果数组基本有序，如何优化）
+    归并 ，希尔，插入 须知道原理 能手写最好
+    递归
+     二叉树 按层遍历，先序，中序，后序， 
+    判断二叉树是不是完全二叉树
+    判断二叉树
+    链表
+    链表翻转，
+    LRU算法
+    LFU 算法(大概了解其原理就可以)
+    
+
+13 分布式相关
+.    雪花算法实现（时间回拨问题如何解决）
+     1）直接抛出异常
+     2）回拨比较短的时候，等待下一毫秒
+  分布式事务，
+   两阶段提交 三阶段提交，以及各自的优缺点
+13. 项目介绍 +设计模式
+     1、项目中用到哪些设计模式？怎么用的，（扩展有可能问spring中用的设计模式）
+          代理模式：
+          工厂模式：
+          责任链模式：
+          模板模式：
+          策略模式：
+          单例模式：
+          
+
+    项目中你认为比较难得点
+   项目qps
+    解决过的问题
+15.架构设计，秒杀项目如何设计
+
+
+   
+ 
+   
+  
+  
+  
+
+    
+
+  
+   
+  
+   
+

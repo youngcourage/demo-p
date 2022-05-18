@@ -1,0 +1,177 @@
+基础题
+1.rocketMq   
+2.Redis
+3.Mysql
+4.线程池，多线程
+5.Hystrix/RateLimiter
+6.zookeeper
+7.dubbo rpc
+10.spring 
+9.es
+10.sharding jdbc
+11JVM
+12.算法
+13.项目介绍 +设计模式
+
+14.shiro
+15:配置中心的实现原理
+16.操作系统相关：直接内存拷贝  NIO,BIO
+17.分布式相关：雪花算法实现（时间回拨问题如何解决），分布式事务实现
+18Netty
+
+基础题：
+1.  为什么重写了equals还要重写hashCode
+2.  聊一下java的集合类以及实现原理
+3.HashMap ConcurrentHashMap Arraylist实现原理
+4. java 中队列有哪些，分别有什么区别
+  
+1.rocketMq
+   应用场景以及自己项目中应用到的场景，实现功能 rocketMq 优缺点
+   集群消息和广播消息（1 Topic, 3分区, 1个消费组，2个消费者）
+   如何保证消息不丢失
+   延迟消息实现原理，如何发送固定时间消息例如8秒情况
+   如何保证幂等性
+   rocketMQ 性能为什么高
+   几种集群模式
+   主从如何进行数据同步
+   ack实现机制
+   死信队列
+   顺序消息，如何保证消息的顺序性，全局有序和局部有序
+   如何保证消息的一致性
+  技术选型：rocketMq kafaka rabbitMq 技术选型如何做
+  消息突然挤压如何处理
+   本着解决线上异常为最高优先级，然后通过监控和日志进行排查并优化业务逻辑，最后是扩容消费端和分片的数量。
+2.redis
+  为什么快，IO内存模型 TPS/QPS 是多少，解决了项目中什么问题
+  淘汰策略有哪些， LRU 算法实现原理
+  热KEY 如何设计，比如 库存 100 0000W  做促销，不能都访问数据库，放到redis 单台也不行 ，如何做。。。
+  缓存击穿、雪崩，穿透
+  redis锁redission 如何实现所重入
+  RDB和AOF 区别
+  集群模式，主从模式，哨兵模式 主从复制原理
+  几种数据类型的实现原理
+  项目中用过的数据类型，举例一一介绍
+  redis 如何解决主从数据延迟的
+  redis 是RDB是阻塞的吗
+  现在redis服务器内存不够用了，但公司也不会给我们购买新的服务器，想办法解决内存不足的情况，而且不能删除redis中的数据，也不能转储备份，
+  解决这种情况还要考虑redis 性能，甚至性能还要比之前高，如何考虑这种情况
+  redis 是否使用了主从复制，读写分离
+
+  3.Mysql
+   Mysql支持最大连接数多少，连接数达到多少的时候需要注意，不同机器连接数如何设置
+   B树和B+树区别 为什么选用B+树 （B树支持范围查找，叶子节点有个双向指针）
+   SQL执行流程有个
+   存储引擎有哪些 myisam和Innodb 区别
+   mysql 锁 
+   事务四个特性，隔离级别介绍，每个特性的实现原理
+   表空间、段、区、页？
+   索引 组合索引原理，组合索引最左前缀，执行计划里几个参数介绍
+   分库分表  分库分表策略，线上你们如何分的，以及你们的主从模式，几主几从，分库分表后带来的问题  
+  三层B+树大概存储2000W数据,mysql每页大小16K,操作系统每页大小4K ,  为什么
+  mysql 调优方向
+  Mysql  页缓存pageCache
+ 4.多线程高并发
+   线程同步的方法
+   java 中的队列有哪些
+   线程池工作原理，几个参数介绍，实际工作中的应用场景 线程池中线程大小设置
+   ConcurentHashMap
+   ArrayList  HashMap
+   AQS、Syncronized 对象头 安全点
+    公平锁和非公平锁不同
+  wait(),notifiy seleep 区别
+   ThreadLocal
+   volitie 关键字
+5.Hystrix/RateLimiter
+  Hystrix 工作原理 
+  Hystrix 的超时时间 与rebin 超时时间 都设置了以哪个为准  ，如果rebin 设置了重试呢，如何设置Hystrix 超时时间（ 计算公式是什么）
+  Hystrix 线程池隔离和信号量隔离有什么区别，信号量/线程池使用场景
+  Hystrix 和RateLimiter 区别，为啥用了Hystrix 还要用rateLimiter
+  RateLimit 实现原理
+  三种限流算法
+ 5.zookeeper
+   分布式锁实现与Redis 锁之间的对比
+   zk分布式锁的惊群效应如何处理
+   zk可以实现的功能
+   zab协议、Proxy算法，选主机制
+  zk 如果分机房部署，专线断了，如何工作
+  zk 可以实现那些功能
+
+6..dubbo rpc
+   dubbo 实现原理
+   dubbo负载均衡是如何实现的
+   dubbo有什么缺点
+   自己实现RPC框架、
+8、Spring 、Springboot
+    spring中用的设计模式，并举例
+    Spring boot 自动装配机制
+    springboot application.xml 和boot strap.xml区别，加载顺序
+    AOP/IOC 实现原理
+   Spring  事务实现原理
+    事务的传播特性
+   spring boot 配置文件加载顺讯 classpath ,config.....
+
+9.es 的倒排索引
+  es 深度分页
+  ES分片个数
+  
+  ES近实时
+  ES集群相关ES脑裂
+  ElasticSearch：剖析query_and_fetch和query_then_fetch的区
+   ES在高并发下如何保证读写一致性？
+10.sharding JDBC 缺点，优点
+    sharding 如何进行聚合查询的，范围查询的
+    sharding的分片策略
+     
+    
+
+11JVM
+    内存模型，
+    类加载机制
+    垃圾回收算法，
+    CPU百分百，内存溢出
+    gc root 的节点
+    自己项目采用的垃圾收集器
+    jvm调优点
+   Finilize终结方法
+
+12.算法
+   冒泡，快速，堆排序（能手写） 快速排序可能存在问题，如何优化，冒泡排序如何优化（如果数组基本有序，如何优化）
+    归并 ，希尔，插入 须知道原理 能手写最好
+    递归
+     二叉树 按层遍历，先序，中序，后序， 
+    判断二叉树是不是完全二叉树
+    判断二叉树
+    链表
+    链表翻转，
+    LRU算法
+    LFU 算法(大概了解其原理就可以)
+    
+13.项目介绍 +设计模式
+     用到哪些设计模式？怎么用的
+    项目中你认为比较难得点
+   项目qps
+    解决过的问题
+   项目中用到哪些设计模式？怎么用的
+    单例模式的不同写法、责任链、代理
+
+
+14.shiro
+15.秒杀结构设计
+    下单  既减优惠券，又要减库存如何保证数据一致性设计
+   
+ 18,Netty
+   Netty调优
+   Netty常用的组件
+   Netty
+   
+  
+  
+  
+
+    
+
+  
+   
+  
+   
+
